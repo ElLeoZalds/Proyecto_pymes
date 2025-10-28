@@ -7,7 +7,7 @@ exports.crearPrestamo = async (req, res) => {
     letracambio,
     fechainicio,
     fechalimite,
-    transperencia,
+    transparencia,
     interes,
     cliente,
   } = req.body;
@@ -18,10 +18,33 @@ exports.crearPrestamo = async (req, res) => {
     !letracambio ||
     !fechainicio ||
     !fechalimite ||
-    !transperencia ||
+    !transferencia ||
     !interes ||
     !cliente
   ) {
     return res.status(201).json({ mensaje: "Falta completar los campos" });
+  }
+
+  const sql =
+    "INSERT INTO prestamos (prestamo, caracteristicas, letracambio, fechainicio, fechalimite, transferencia, interes, cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?";
+
+  try {
+    const [result] = await db.query(sql, [
+      prestamo,
+      caracteristicas,
+      letracambio,
+      fechainicio,
+      fechalimite,
+      transferencia,
+      interes,
+      cliente,
+    ]);
+
+    res
+      .status(201)
+      .json({ id: result.insertId, mensaje: "Registrado correctamente" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ mensaje: "Error interno del servidor" });
   }
 };
