@@ -16,10 +16,12 @@ CREATE TABLE prestamos (
     prestamo			DECIMAL(10, 2) NOT NULL,
     caracteristicas		VARCHAR(100) NOT NULL,
     letracambio			VARCHAR(200) NOT NULL,
-    fechainicio			DATETIME NOT NULL DEFAULT NOW(),
+    fechainicio			DATETIME NOT NULL DEFAULT NOW(),
     fechalimite			DATE NOT NULL,
     transferencia    	VARCHAR(200) COMMENT "Transferencia o efectivo",
-    interes				DECIMAL(5, 2),
+    montototal			DECIMAL(6, 2),
+    estado				ENUM("vigente", "pagado", "vendido") DEFAULT "vigente",
+    interes				DECIMAL(6, 2),
     cliente				INT,
     FOREIGN KEY (cliente) REFERENCES clientes(id) ON DELETE CASCADE
 )ENGINE = INNODB;
