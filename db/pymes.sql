@@ -16,7 +16,7 @@ CREATE TABLE prestamos (
     prestamo			DECIMAL(10, 2) NOT NULL,
     caracteristicas		VARCHAR(100) NOT NULL,
     letracambio			VARCHAR(200) NOT NULL,
-    fechainicio			DATETIME NOT NULL DEFAULT NOW(),
+    fechainicio			DATETIME NOT NULL DEFAULT NOW(),
     fechalimite			DATE NOT NULL,
     transferencia    	VARCHAR(200) COMMENT "Transferencia o efectivo",
     montototal			DECIMAL(6, 2),
