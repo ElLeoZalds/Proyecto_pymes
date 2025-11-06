@@ -1,17 +1,23 @@
 const db = require("../config/db");
 
 exports.crearClientes = async (req, res) => {
-  const { nombres, apellidos, dni, telefono } = req.body;
+  const { apellidos, nombres, dni, direccion, telefono } = req.body;
 
-  if (!nombres || !apellidos || !dni || !telefono) {
+  if (!apellidos || !nombres || !dni || !direccion || !telefono) {
     return res.status(201).json({ mensaje: "Falta completar los campos" });
   }
 
   const sql =
-    "INSERT INTO clientes (nombres, apellidos, dni, telefono VALUES (?, ?, ?, ?)";
+    "INSERT INTO clientes (apellidos, nombres, dni, direccion, telefono VALUES (?, ?, ?, ?, ?)";
 
   try {
-    const [result] = await db.query(sql, [nombres, apellidos, dni, telefono]);
+    const [result] = await db.query(sql, [
+      apellidos,
+      nombres,
+      dni,
+      direccion,
+      telefono,
+    ]);
 
     res
       .status(201)
@@ -23,7 +29,8 @@ exports.crearClientes = async (req, res) => {
 };
 
 exports.obtenerCliente = async (req, res) => {
-  const sql = "SELECT id, nombres, apellidos, dni, telefono FROM clientes";
+  const sql =
+    "SELECT id, apellidos, nombres, dni, direccion, telefono FROM clientes";
 
   try {
     const [clientes] = await db.query(sql);
@@ -38,7 +45,7 @@ exports.obtenerClientePorId = async (req, res) => {
   const { id } = req.params;
 
   const sql =
-    "SELECT id, nombres, apellidos, dni, telefono FROM clientes WHERE id = ?";
+    "SELECT id, apellidos, nombres, dni, direccion, telefono FROM clientes WHERE id = ?";
 
   try {
     const [clientes] = await db.query(sql, [id]);
@@ -56,28 +63,33 @@ exports.obtenerClientePorId = async (req, res) => {
 
 exports.actualizarCliente = async (req, res) => {
   const { id } = req.params;
-  const { nombres, apellidos, dni, telefono } = req.body;
+  const { apellidos, nombres, dni, direccion, telefono } = req.body;
 
-  if (!nombres && !apellidos && !dni && !telefono) {
+  if (!apellidos && !nombres && !dni && !direccion && !telefono) {
     return res.status(201).json({ mensaje: "Falta completar los campos" });
   }
 
   let sqlParts = [];
   let values = [];
 
-  if (nombres) {
-    sqlParts.push("nombres = ?");
-    values.push(nombres);
-  }
-
   if (apellidos) {
     sqlParts.push("apellidos = ?");
     values.push(apellidos);
   }
 
+  if (nombres) {
+    sqlParts.push("nombres = ?");
+    values.push(nombres);
+  }
+
   if (dni) {
     sqlParts.push("dni = ?");
     values.push(dni);
+  }
+
+  if (direccion) {
+    sqlParts.push("direccion = ?");
+    values.push(direccion);
   }
 
   if (telefono) {

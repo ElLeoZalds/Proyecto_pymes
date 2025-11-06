@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const prestamoController = require("../controllers/prestamoController");
+const pagoController = require("../controllers/pagoController");
 
-router.post("/", prestamoController.crearPrestamo);
-router.get("/", prestamoController.obtenerPrestamos);
-router.get("/:id", prestamoController.obtenerPrestamoPorId);
-router.put("/:id", prestamoController.actualizarPrestamo);
-router.delete("/:id", prestamoController.eliminarPrestamo);
+
+router.post("/", pagoController.crearPago);
+router.get("/", pagoController.obtenerPago);
+router.get("/:id", pagoController.obtenerPagoPorId);
+router.put("/:id", pagoController.actualizarPago);
+router.delete("/:id", pagoController.eliminarPago);
 
 module.exports = router;

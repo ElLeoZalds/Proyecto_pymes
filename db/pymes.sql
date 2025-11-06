@@ -4,9 +4,10 @@ USE pymes;
 
 CREATE TABLE clientes (
 	id					INT PRIMARY KEY AUTO_INCREMENT,
-    nombres				VARCHAR(20) NOT NULL,
     apellidos			VARCHAR(20) NOT NULL,
+    nombres				VARCHAR(20) NOT NULL,
     dni					CHAR(8) NOT NULL,
+    direccion			VARCHAR(20) NOT NULL,
 	telefono			CHAR(9) NOT NULL,
     CONSTRAINT uk_dni UNIQUE(dni)
 )ENGINE = INNODB;
@@ -19,10 +20,10 @@ CREATE TABLE prestamos (
     fechainicio			DATETIME NOT NULL DEFAULT NOW(),
     fechalimite			DATE NOT NULL,
     transferencia    	VARCHAR(200) COMMENT "Transferencia o efectivo",
-    montototal			DECIMAL(6, 2),
+    montototal			DECIMAL(10, 2),
     estado				ENUM("vigente", "pagado", "vendido") DEFAULT "vigente",
-    interes				DECIMAL(6, 2),
-    cliente				INT,
+    interes				DECIMAL(10, 2),
+    cliente				INT NOT NULL,
     FOREIGN KEY (cliente) REFERENCES clientes(id) ON DELETE CASCADE
 )ENGINE = INNODB;
 
@@ -34,9 +35,9 @@ CREATE TABLE pagos (
     FOREIGN KEY (prestamo) REFERENCES prestamos(id)
 )ENGINE = INNODB;
 
-INSERT INTO clientes (nombres, apellidos, dni, telefono) 
-			VALUES ("Fabián Alonzo", "Salas Vasquez", "74064042", "936200224"),
-				   ("Leonardo Alexander", "Palacios Gonzales", "75266220", "903386996");
+INSERT INTO clientes (apellidos, nombres, dni, direccion, telefono) 
+			VALUES ("Salas Vasquez", "Fabián Alonzo", "Av. Falsa 123", "74064042", "936200224"),
+				   ("Palacios Gonzales", "Leonardo Alexander", "Calle. 842", "75266220", "903386996");
  
 INSERT INTO prestamos (prestamo, caracteristicas, letracambio, fechalimite, transferencia, interes, cliente)
 			VALUES (1000, "caracteristicas", "letracambio.pdf", "2025-11-01", NULL, 30, 1);

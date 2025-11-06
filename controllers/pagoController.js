@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-exports.crearPrestamo = async (req, res) => {
+exports.crearPago = async (req, res) => {
   const { cuota, fechapago, prestamo } = req.body;
 
   if (!cuota || !fechapago || !prestamo) {
@@ -20,7 +20,7 @@ exports.crearPrestamo = async (req, res) => {
   }
 };
 
-exports.obtenerPagos = async (req, res) => {
+exports.obtenerPago = async (req, res) => {
   const sql = "SELECT id, cuota, fechapago, prestamo FROM pagos";
   try {
     const [pagos] = await db.query(sql);
@@ -82,4 +82,3 @@ exports.eliminarPago = async (req, res) => {
     res.status(500).json({ mensaje: "Error interno del servidor" });
   }
 };
-
