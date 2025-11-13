@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const fs = require('fs').promises;
+const fs = require("fs").promises;
 
 const clienteRoutes = require("./routes/clienteRoutes");
 const prestamoRoutes = require("./routes/prestamoRoutes");
@@ -31,6 +31,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 //Gestión de archivos
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html")); //root
+});
 
 app.get("/clientes", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "clientes.html"));
