@@ -73,7 +73,9 @@ async function obtenerListaPrestamos() {
     if (prestamo) {
       option.value = prestamo.id;
       // Aquí mostramos el monto total del préstamo
-      option.textContent = `${cliente.nombres} : ${parseFloat(prestamo.montototal ?? 0).toFixed(2)} total`;
+      option.textContent = `${cliente.nombres} : ${parseFloat(
+        prestamo.montototal ?? 0
+      ).toFixed(2)} total`;
     } else {
       option.disabled = true;
       option.textContent = `${cliente.nombres} : sin préstamo`;
@@ -149,7 +151,9 @@ formulario.addEventListener("submit", async (event) => {
       const celdaMonto = nuevaFila.insertCell();
       celdaMonto.textContent = parseFloat(result.montorestante ?? 0).toFixed(2);
 
-      const cliente = listaPrestamos.options[listaPrestamos.selectedIndex].text.split(":")[0].trim();
+      const cliente = listaPrestamos.options[listaPrestamos.selectedIndex].text
+        .split(":")[0]
+        .trim();
       nuevaFila.insertCell().textContent = cliente;
 
       const actionCell = nuevaFila.insertCell();
