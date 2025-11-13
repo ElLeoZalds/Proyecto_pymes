@@ -35,13 +35,11 @@ CREATE TABLE pagos (
     FOREIGN KEY (prestamo) REFERENCES prestamos(id)
 )ENGINE = INNODB;
 
--- Ejecutar estas lineas obligatoriamente
 ALTER TABLE prestamos ADD COLUMN montorestante DECIMAL(10,2) DEFAULT 0;
 
 SET SQL_SAFE_UPDATES = 0;
 UPDATE prestamos SET montorestante = montototal;
 SET SQL_SAFE_UPDATES = 1;
--- ------------------------------------------------------
 
 INSERT INTO clientes (apellidos, nombres, dni, direccion, telefono) 
 			VALUES ("Salas Vasquez", "Fabián Alonzo", "74064042", "Av. Chavin", "936200224"),
