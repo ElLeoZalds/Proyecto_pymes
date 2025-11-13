@@ -25,6 +25,8 @@
       </div>
 
       <form action="" id="form-clientes" autocomplete="off">
+        <input type="hidden" name="idclientes" id="idclientes" />
+
         <div class="container">
           <div class="card">
             <div class="card-header">
@@ -55,7 +57,6 @@
                       id="nombres"
                       name="nombres"
                       required
-                      autofocus
                     />
                     <label for="nombres">Nombres</label>
                   </div>
@@ -73,9 +74,23 @@
                       maxlength="8"
                       placeholder="DNI"
                       required
-                      autofocus
                     />
                     <label for="dni">DNI</label>
+                  </div>
+                </div>
+                <!-- col-md-6 mb-2 -->
+
+                <div class="col-md-6 mb-2">
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rounded-0"
+                      id="direccion"
+                      name="direccion"
+                      placeholder="Dirección"
+                      required
+                    />
+                    <label for="direccion">Dirección</label>
                   </div>
                 </div>
                 <!-- col-md-6 mb-2 -->
@@ -91,7 +106,6 @@
                       maxlength="9"
                       placeholder="telefono"
                       required
-                      autofocus
                     />
                     <label for="telefono">Teléfono</label>
                   </div>
@@ -103,14 +117,14 @@
               <button
                 type="reset"
                 class="btn btn-outline-danger rounded-0"
-                id="btnCancelarCliente"
+                id="btnCancelar"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 class="btn btn-outline-primary rounded-0"
-                id="btnGuardarCliente"
+                id="btnGuardar"
               >
                 Guardar
               </button>
@@ -119,31 +133,48 @@
         </div>
       </form>
 
+      <style>
+        h3 {
+          font-weight: bold;
+          font-size: 30px;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .table tbody tr td:nth-child(4),
+        td:nth-child(6){
+          text-align: right;
+        }
+      </style>
+
       <div class="container table-responsive mt-4">
         <table class="table table-bordered" id="tabla-clientes">
           <colgroup>
             <col style="width: 5%" />
             <col style="width: 20%" />
             <col style="width: 20%" />
+            <col style="width: 10%" />
             <col style="width: 20%" />
-            <col style="width: 20%" />
+            <col style="width: 10%" />
             <col style="width: 15%" />
-            
           </colgroup>
           <thead class="table-light">
             <tr>
-              <th>ID</th>
-              <th>Apellidos</th>
-              <th>Nombres</th>
-              <th>DNI</th>
-              <th>Teléfono</th>
-              <th>Acciones</th>
+              <th class="text-center">ID</th>
+              <th class="text-center">Apellidos</th>
+              <th class="text-center">Nombres</th>
+              <th class="text-center">DNI</th>
+              <th class="text-center">Dirección</th>
+              <th class="text-center">Teléfono</th>
+              <th class="text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody class="text-center"></tbody>
         </table>
       </div>
     </main>
     <footer></footer>
+
+    <script src="./js/app.clientes.js"></script>
   </body>
 </html>

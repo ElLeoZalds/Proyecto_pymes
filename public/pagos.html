@@ -36,6 +36,8 @@
       <h3>Gestión de Pagos</h3>
 
       <form action="" id="form-pagos" autocomplete="off">
+        <input type="hidden" name="idpagos" id="idpagos" />
+
         <div class="container">
           <div class="card">
             <div class="card-header">
@@ -43,7 +45,7 @@
             </div>
             <div class="card-body">
               <div class="row g-2">
-                <div class="col-md-4 mb-2">
+                <div class="col-md-6 mb-2">
                   <div class="form-floating">
                     <input
                       type="text"
@@ -57,31 +59,17 @@
                   </div>
                 </div>
 
-                <div class="col-md-4 mb-2">
+                <div class="col-md-6 mb-2">
                   <div class="form-floating">
-                    <input
-                      type="date"
-                      class="form-control rounded-0"
-                      id="fecha_pago"
-                      name="fecha_pago"
+                    <select
+                      name="lista-prestamo"
+                      id="lista-prestamo"
+                      class="form-select rounded-0"
                       required
-                      autofocus
-                    />
-                    <label for="fecha_pago">Fecha de Pago</label>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb-2">
-                  <div class="form-floating">
-                    <input
-                      type="number"
-                      class="form-control rounded-0"
-                      id="prestamo"
-                      name="prestamo"
-                      required
-                      autofocus
-                    />
-                    <label for="prestamo">Monto</label>
+                    >
+                      <option value="">Seleccione</option>
+                    </select>
+                    <label for="lista-prestamo">Prestamo</label>
                   </div>
                 </div>
               </div>
@@ -90,14 +78,14 @@
               <button
                 type="reset"
                 class="btn btn-outline-danger rounded-0"
-                id="btnCancelarCliente"
+                id="btnCancelar"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 class="btn btn-outline-primary rounded-0"
-                id="btnGuardarCliente"
+                id="btnGuardar"
               >
                 Guardar
               </button>
@@ -106,12 +94,27 @@
         </div>
       </form>
 
+      <style>
+        h3 {
+          font-weight: bold;
+          font-size: 30px;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .table tbody tr td:nth-child(2),
+        td:nth-child(4) {
+          text-align: right;
+        }
+      </style>
+
       <div class="table-responsive mt-3">
         <table class="table table-bordered" id="tabla-pagos">
           <colgroup>
             <col style="width: 10%" />
-            <col style="width: 30%" />
-            <col style="width: 30%" />
+            <col style="width: 25%" />
+            <col style="width: 25%" />
+            <col style="width: 10%" />
             <col style="width: 15%" />
             <col style="width: 15%" />
           </colgroup>
@@ -120,11 +123,12 @@
               <th class="text-center">ID</th>
               <th class="text-center">Cuota</th>
               <th class="text-center">Fecha de Pago</th>
-              <th class="text-center">Monto</th>
+              <th class="text-center">Monto Restante</th>
+              <th class="text-center">Cliente</th>
               <th class="text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody class="text-center"></tbody>
         </table>
       </div>
     </main>

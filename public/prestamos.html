@@ -19,13 +19,14 @@
   </head>
   <body>
     <header></header>
-
     <main class="container my-3">
       <div class="mt-4 container">
         <h3>Registro de Préstamos</h3>
       </div>
 
       <form action="" id="form-prestamos" autocomplete="off">
+        <input type="hidden" name="idprestamos" id="idprestamos" />
+
         <div class="container">
           <div class="card">
             <div class="card-header">
@@ -57,7 +58,6 @@
                       name="caracteristicas"
                       id="caracteristicas"
                       required
-                      autofocus
                     />
                     <label for="caracteristicas">Características</label>
                   </div>
@@ -70,9 +70,9 @@
                       class="form-control rounded-0 p-4"
                       name="letracambio"
                       id="letracambio"
-                      required
-                      autofocus
+                      accept=".jpg, .jpeg, .png, .pdf"
                     />
+                    <div id="archivo-actual"></div>
                     <label for="letracambio">Letra de Cambio</label>
                   </div>
                 </div>
@@ -85,7 +85,6 @@
                       name="fechalimite"
                       id="fechalimite"
                       required
-                      autofocus
                     />
                     <label for="fechalimite">Fecha Límite</label>
                   </div>
@@ -98,8 +97,6 @@
                       class="form-control rounded-0"
                       name="transferencia"
                       id="transferencia"
-                      required
-                      autofocus
                     />
                     <label for="transferencia">Transferencia</label>
                   </div>
@@ -114,7 +111,6 @@
                       name="montototal"
                       id="montototal"
                       required
-                      autofocus
                     />
                     <label for="montototal">Monto Total</label>
                   </div>
@@ -144,7 +140,6 @@
                       name="interes"
                       id="interes"
                       required
-                      autofocus
                     />
                     <label for="interes">Interés</label>
                   </div>
@@ -154,12 +149,13 @@
                   <div class="form-floating">
                     <select
                       name="clientes"
-                      id="clientes"
+                      id="lista-clientes"
                       class="form-select rounded-0"
+                      required
                     >
                       <option value="">Seleccione</option>
                     </select>
-                    <label for="clientes">Clientes</label>
+                    <label for="lista-clientes">Clientes</label>
                   </div>
                 </div>
               </div>
@@ -168,14 +164,14 @@
               <button
                 type="reset"
                 class="btn btn-outline-danger rounded-0"
-                id="btnCancelarCliente"
+                id="btnCancelar"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 class="btn btn-outline-primary rounded-0"
-                id="btnGuardarCliente"
+                id="btnGuardar"
               >
                 Guardar
               </button>
@@ -184,8 +180,23 @@
         </div>
       </form>
 
+      <style>
+        h3 {
+          font-weight: bold;
+          font-size: 30px;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .table tbody tr td:nth-child(2),
+        td:nth-child(10),
+        td:nth-child(8) {
+          text-align: right;
+        }
+      </style>
+
       <div class="container table-responsive mt-4">
-        <table class="table table-bordered" id="tabla-clientes">
+        <table class="table table-bordered" id="tabla-prestamos">
           <colgroup>
             <col style="width: 5%" />
             <col style="width: 9%" />
@@ -202,25 +213,27 @@
           </colgroup>
           <thead class="table-light">
             <tr>
-              <th>ID</th>
-              <th>Préstamo</th>
-              <th>Características</th>
-              <th>Letra de cambio</th>
-              <th>Fecha inicio</th>
-              <th>Fecha límite</th>
-              <th>Transferencia</th>
-              <th>Monto total</th>
-              <th>Estado</th>
-              <th>Interés</th>
-              <th>Clientes</th>
-              <th>Acciones</th>
+              <th class="text-center">ID</th>
+              <th class="text-center">Préstamo</th>
+              <th class="text-center">Características</th>
+              <th class="text-center">Letra de cambio</th>
+              <th class="text-center">Fecha inicio</th>
+              <th class="text-center">Fecha límite</th>
+              <th class="text-center">Transferencia</th>
+              <th class="text-center">Monto total</th>
+              <th class="text-center">Estado</th>
+              <th class="text-center">Interés</th>
+              <th class="text-center">Clientes</th>
+              <th class="text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody class="text-center"></tbody>
         </table>
       </div>
     </main>
 
     <footer></footer>
+
+    <script src="./js/app.prestamos.js"></script>
   </body>
 </html>

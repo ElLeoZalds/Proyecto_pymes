@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+const fs = require('fs').promises;
+
 const clienteRoutes = require("./routes/clienteRoutes");
 const prestamoRoutes = require("./routes/prestamoRoutes");
 const pagoRoutes = require("./routes/pagoRoutes");
@@ -19,8 +21,16 @@ app.use(
   })
 );
 
+const uploadDir = "./public/uploads";
+fs.mkdir(uploadDir, { recursive: true });
+
+// * MIDDLEWARE *
+//Comunicación se realizará JSON
 app.use(express.json());
+//Servir los documentos HTML, CSS, JS
 app.use(express.static(path.join(__dirname, "public")));
+//Gestión de archivos
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/clientes", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "clientes.html"));

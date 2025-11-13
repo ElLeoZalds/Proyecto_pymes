@@ -4,11 +4,11 @@ exports.crearClientes = async (req, res) => {
   const { apellidos, nombres, dni, direccion, telefono } = req.body;
 
   if (!apellidos || !nombres || !dni || !direccion || !telefono) {
-    return res.status(201).json({ mensaje: "Falta completar los campos" });
+    return res.status(400).json({ mensaje: "Falta completar los campos" });
   }
 
   const sql =
-    "INSERT INTO clientes (apellidos, nombres, dni, direccion, telefono VALUES (?, ?, ?, ?, ?)";
+    "INSERT INTO clientes (apellidos, nombres, dni, direccion, telefono) VALUES (?, ?, ?, ?, ?)";
 
   try {
     const [result] = await db.query(sql, [
@@ -66,7 +66,7 @@ exports.actualizarCliente = async (req, res) => {
   const { apellidos, nombres, dni, direccion, telefono } = req.body;
 
   if (!apellidos && !nombres && !dni && !direccion && !telefono) {
-    return res.status(201).json({ mensaje: "Falta completar los campos" });
+    return res.status(400).json({ mensaje: "Falta completar los campos" });
   }
 
   let sqlParts = [];

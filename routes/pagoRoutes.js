@@ -3,7 +3,6 @@ const router = express.Router();
 
 const pagoController = require("../controllers/pagoController");
 
-
 router.post("/", pagoController.crearPago);
 router.get("/", pagoController.obtenerPago);
 router.get("/:id", pagoController.obtenerPagoPorId);

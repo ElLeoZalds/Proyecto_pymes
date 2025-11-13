@@ -1,86 +1,84 @@
 const db = require("../config/db");
 
 exports.crearPrestamo = async (req, res) => {
-  const {
-    prestamo,
-    caracteristicas,
-    letracambio,
-    fechainicio,
-    fechalimite,
-    transferencia,
-    montototal,
-    estado,
-    interes,
-    cliente,
-  } = req.body;
-
-  if (
-    !prestamo ||
-    !caracteristicas ||
-    !letracambio ||
-    !fechainicio ||
-    !fechalimite ||
-    !transferencia ||
-    !montototal ||
-    !estado ||
-    !interes ||
-    !cliente
-  ) {
-    return res.status(201).json({ mensaje: "Falta completar los campos" });
-  }
-
-  const sql =
-    "INSERT INTO prestamos (prestamo, caracteristicas, letracambio, fechainicio, fechalimite, transferencia, montototal, estado, interes, cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?";
-
   try {
-    const [result] = await db.query(sql, [
+    const {
       prestamo,
       caracteristicas,
-      letracambio,
-      fechainicio,
       fechalimite,
-      transferencia,
       montototal,
       estado,
       interes,
       cliente,
-    ]);
+    } = req.body;
 
-    res
-      .status(201)
-      .json({ id: result.insertId, mensaje: "Registrado correctamente" });
+    // Validar si el cliente tiene un préstamo vigente
+    const [existe] = await db.query(
+      "SELECT id FROM prestamos WHERE cliente = ? AND estado = 'vigente'",
+      [cliente]
+    );
+
+    if (existe.length > 0) {
+      return res.status(400).json({
+        mensaje:
+          "El cliente ya tiene un préstamo vigente. No puede registrar otro hasta finalizarlo.",
+      });
+    }
+
+    const letracambio = req.files?.letracambio
+      ? `/uploads/${req.files.letracambio[0].filename}`
+      : null;
+
+    const transferencia = req.files?.transferencia
+      ? `/uploads/${req.files.transferencia[0].filename}`
+      : null;
+
+    const [result] = await db.query(
+      "INSERT INTO prestamos (prestamo, caracteristicas, letracambio, fechalimite, transferencia, montototal, estado, interes, cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        prestamo,
+        caracteristicas,
+        letracambio,
+        fechalimite,
+        transferencia,
+        montototal,
+        estado,
+        interes,
+        cliente,
+      ]
+    );
+
+    res.status(201).json({
+      id: result.insertId,
+      message: "Registro Correcto",
+    });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ mensaje: "Error interno del servidor" });
+    res.status(500).json({ mensaje: "Error en el proceso de registro" });
   }
 };
 
 exports.obtenerPrestamo = async (req, res) => {
   const sql =
     "SELECT id, prestamo, caracteristicas, letracambio, fechainicio, fechalimite, transferencia, montototal, estado, interes, cliente FROM prestamos";
-
   try {
     const [prestamos] = await db.query(sql);
     res.status(200).json(prestamos);
   } catch (e) {
-    console.error(e);
     res.status(500).json({ mensaje: "Error interno del servidor" });
   }
 };
 
 exports.obtenerPrestamoPorId = async (req, res) => {
   const { id } = req.params;
-
-  const sql =
-    "SELECT id, prestamo, caracteristicas, letracambio, fechainicio, fechalimite, transferencia, montototal, estado, interes, cliente FROM prestamos WHERE id = ?";
   try {
-    const [prestamos] = await db.query(sql, [id]);
-    if (prestamos.length === 0) {
-      return res.status(404).json({ mensaje: "Categoria no encontrada" });
-    }
-    res.status(200).json(prestamos[0]);
+    const [prestamo] = await db.query("SELECT * FROM prestamos WHERE id = ?", [
+      id,
+    ]);
+    if (prestamo.length === 0)
+      return res.status(404).json({ mensaje: "Préstamo no encontrado" });
+    res.status(200).json(prestamo[0]);
   } catch (e) {
-    console.error(e);
     res.status(500).json({ mensaje: "Error interno del servidor" });
   }
 };
@@ -90,107 +88,51 @@ exports.actualizarPrestamo = async (req, res) => {
   const {
     prestamo,
     caracteristicas,
-    letracambio,
-    fechainicio,
     fechalimite,
-    transferencia,
     montototal,
     estado,
     interes,
     cliente,
   } = req.body;
 
-  if (
-    !prestamo &&
-    !caracteristicas &&
-    !letracambio &&
-    !fechainicio &&
-    !fechalimite &&
-    !transferencia &&
-    !montototal &&
-    !estado &&
-    !interes &&
-    !cliente
-  ) {
-    return res.status(201).json({ mensaje: "Falta completar los campos" });
-  }
+  const letracambio = req.files?.letracambio
+    ? `/uploads/${req.files.letracambio[0].filename}`
+    : req.body.letracambio || null;
 
-  let sqlParts = [];
-  let values = [];
+  const transferencia = req.files?.transferencia
+    ? `/uploads/${req.files.transferencia[0].filename}`
+    : req.body.transferencia || null;
 
-  if (prestamo) {
-    sqlParts.push("prestamo = ?");
-    values.push(prestamo);
-  }
-
-  if (caracteristicas) {
-    sqlParts.push("caracteristicas = ?");
-    values.push(caracteristicas);
-  }
-
-  if (letracambio) {
-    sqlParts.push("letracambio = ?");
-    values.push(letracambio);
-  }
-
-  if (fechainicio) {
-    sqlParts.push("fechainicio = ?");
-    values.push(fechainicio);
-  }
-
-  if (fechalimite) {
-    sqlParts.push("fechalimite = ?");
-    values.push(fechalimite);
-  }
-
-  if (transferencia) {
-    sqlParts.push("transferencia = ?");
-    values.push(transferencia);
-  }
-
-  if (montototal) {
-    sqlParts.push("montototal = ?");
-    values.push(montototal);
-  }
-
-  if (estado) {
-    sqlParts.push("estado = ?");
-    values.push(estado);
-  }
-
-  if (interes) {
-    sqlParts.push("interes = ?");
-    values.push(interes);
-  }
-
-  if (cliente) {
-    sqlParts.push("cliente = ?");
-    values.push(cliente);
-  }
-
-  const sql = `UPDATE prestamos SET ${sqlParts.join(", ")} WHERE id = ?`;
-  values.push(id);
+  const sql = `UPDATE prestamos SET prestamo=?, caracteristicas=?, letracambio=?, fechalimite=?, transferencia=?, montototal=?, estado=?, interes=?, cliente=? WHERE id=?`;
 
   try {
-    const [result] = await db.query(sql, values);
+    await db.query(sql, [
+      prestamo,
+      caracteristicas,
+      letracambio,
+      fechalimite,
+      transferencia,
+      montototal,
+      estado,
+      interes,
+      cliente,
+      id,
+    ]);
     res.status(200).json({ mensaje: "Actualizado correctamente" });
   } catch (e) {
-    console.error(e);
     res.status(500).json({ mensaje: "Error interno del servidor" });
   }
 };
 
 exports.eliminarPrestamo = async (req, res) => {
   const { id } = req.params;
-
   const sql = "DELETE FROM prestamos WHERE id = ?";
-
   try {
     const [result] = await db.query(sql, [id]);
+    if (result.affectedRows === 0)
+      return res.status(404).json({ mensaje: "Préstamo no encontrado" });
     res.status(200).json({ mensaje: "Eliminado correctamente" });
   } catch (e) {
-    console.error(e);
     res.status(500).json({ mensaje: "Error interno del servidor" });
   }
 };
-
