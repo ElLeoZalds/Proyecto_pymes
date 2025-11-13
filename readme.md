@@ -44,7 +44,6 @@ CREATE TABLE pagos (
     FOREIGN KEY (prestamo) REFERENCES prestamos(id)
 )ENGINE = INNODB;
 
--- Ejecutar estas lineas obligatoriamente
 ALTER TABLE prestamos ADD COLUMN montorestante DECIMAL(10,2) DEFAULT 0;
 
 SET SQL_SAFE_UPDATES = 0;
